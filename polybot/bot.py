@@ -20,7 +20,6 @@ class Bot:
         self.telegram_bot_client = telebot.TeleBot(token)
         logger.info(f"Token: {token}")
         logger.info(f"Telegram Chat URL: {telegram_chat_url}")
-
         # Remove existing webhook
         try:
             self.telegram_bot_client.remove_webhook()
@@ -30,27 +29,11 @@ class Bot:
 
         time.sleep(0.5)
 
-        # Check URL accessibility with retries
-        max_retries = 5
-        for attempt in range(max_retries):
-            try:
-                response = requests.get(f'{telegram_chat_url}/{token}/', timeout=10)
-                if response.status_code == 200:
-                    logger.info(f"Response status code: {response.status_code}")
-                    break
-                else:
-                    logger.error(f"Webhook URL check failed with status code: {response.status_code}")
-            except requests.exceptions.RequestException as e:
-                logger.error(f"Attempt {attempt + 1} - Error checking webhook URL: {e}")
-                if attempt < max_retries - 1:
-                    time.sleep(2 ** attempt)  # Exponential backoff
-                else:
-                    logger.error("Max retries exceeded. Unable to check webhook URL.")
-                    return
-
         # Set the webhook URL
         try:
-            self.telegram_bot_client.set_webhook(url=f'{telegram_chat_url}/{token}/', timeout=60)
+           # Open certificate file only when needed and set webhook
+            with open("/usr/src/app/tls.crt", 'r') as cert:
+                self.telegram_bot_client.set_webhook(url=f'{telegram_chat_url}/{token}/', certificate=cert ,timeout=60)
             logger.info("Webhook set successfully.")
         except Exception as e:
             logger.error(f"Error setting webhook: {e}")
