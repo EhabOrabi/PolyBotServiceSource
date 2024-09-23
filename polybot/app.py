@@ -43,6 +43,7 @@ else:
 
 TELEGRAM_APP_URL = os.environ['TELEGRAM_APP_URL']
 
+
 # logger.info(f"Token: {TELEGRAM_TOKEN}")
 # logger.info(f"Telegram Chat URL: {TELEGRAM_APP_URL}")
 
@@ -68,7 +69,7 @@ def results():
     # TODO use the prediction_id to retrieve results from DynamoDB and send to the end-user
     region_name = os.environ['REGION_NAME']
     dynamodb = boto3.resource('dynamodb', region_name=region_name)
-    table = dynamodb.Table('ehabo-PolybotService-DynamoDB-tf')
+    table = dynamodb.Table('ehabo-PolybotService-DynamoDB')
 
     logger.info("Received request at /results endpoint")
     try:
@@ -84,7 +85,7 @@ def results():
             item = response['Item']
             chat_id = item['chat_id']
             labels = item['labels']
-           
+
             class_counts = {}
             for label in labels:
                 class_name = label['class']

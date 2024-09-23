@@ -165,6 +165,9 @@ class ObjectDetectionBot(Bot):
                                 QueueUrl=sqs_queue_url,
                                 MessageBody=json.dumps(json_data)
                             )
+                            logger.info(f'###### END of SQS ######')
+                            logger.info(f'sqs_queue_url: {sqs_queue_url}')
+                            logger.info(f'region_name: {region_name}')
                         except Exception as e:
                             logger.error(f'Error: {str(e)}')
                             self.send_text(msg['chat']['id'], 'Failed to process the image. Please try again later.')
