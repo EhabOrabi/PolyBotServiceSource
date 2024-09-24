@@ -12,7 +12,7 @@ app = flask.Flask(__name__)
 
 # TODO load TELEGRAM_TOKEN value from Secret Manager
 def get_secret():
-    secret_name = "ehabo_telegram_tokenV1_tf"
+    secret_name = os.environ['secret_name']   # secret_name = "ehabo_telegram_tokenV1_tf"
     region_name = os.environ['REGION_NAME']
 
     # Create a Secrets Manager client
@@ -43,9 +43,6 @@ else:
 
 TELEGRAM_APP_URL = os.environ['TELEGRAM_APP_URL']
 
-
-# logger.info(f"Token: {TELEGRAM_TOKEN}")
-# logger.info(f"Telegram Chat URL: {TELEGRAM_APP_URL}")
 
 @app.route('/health_check', methods=['GET'])
 def health_check():
