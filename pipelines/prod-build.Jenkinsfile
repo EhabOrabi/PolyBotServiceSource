@@ -32,6 +32,9 @@ pipeline {
             }
         }
 
+
+
+
         stage('Docker setup') {
             steps {
                 sh '''
