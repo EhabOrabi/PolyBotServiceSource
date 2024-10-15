@@ -19,8 +19,8 @@ pipeline {
         IMAGE_BASE_NAME = "polybot2_prod"
 
         DOCKER_CREDS = credentials('dockerhub')
-        DOCKER_USERNAME = DOCKER_CREDS_USR  // The _USR suffix added to access the username value
-        DOCKER_PASS = DOCKER_CREDS_PSW     // The _PSW suffix added to access the password value
+        // DOCKER_USERNAME = "${DOCKER_CREDS_USR}"  // The _USR suffix added to access the username value
+        // DOCKER_PASS = "${DOCKER_CREDS_PSW}"      // The _PSW suffix added to access the password value
     }
 
     stages {
@@ -32,13 +32,11 @@ pipeline {
             }
         }
 
-
-
-
         stage('Docker setup') {
             steps {
                 sh '''
-                  docker login -u $DOCKER_USERNAME -p $DOCKER_PASS
+                  echo "Logging into Docker Hub with username: $DOCKER_CREDS_USR"
+                  docker login -u $DOCKER_CREDS_USR -p $DOCKER_CREDS_PSW
                 '''
             }
         }
