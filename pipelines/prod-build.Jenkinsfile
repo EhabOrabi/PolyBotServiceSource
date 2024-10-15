@@ -35,7 +35,8 @@ pipeline {
         stage('Docker setup') {
             steps {
                 sh '''
-                  docker login -u $DOCKER_USERNAME -p $DOCKER_PASS
+                  echo "Logging into Docker Hub with username: $DOCKER_CREDS_USR"
+                  docker login -u $DOCKER_CREDS_USR -p $DOCKER_CREDS_PSW || echo "Docker login failed"
                 '''
             }
         }
