@@ -34,12 +34,21 @@ pipeline {
 
         stage('Docker setup') {
             steps {
+                echo "Starting Docker setup"
                 sh '''
-                  echo "Logging into Docker Hub with username: $DOCKER_CREDS_USR"
-                  docker login -u $DOCKER_USERNAME -p $DOCKER_PASS || echo "Docker login failed"
+                  echo "Checking Docker credentials..."
+                  echo "Username: $DOCKER_CREDS_USR"
+                  if [ -z "$DOCKER_CREDS_USR" ] || [ -z "$DOCKER_CREDS_PSW" ]; then
+                    echo "Docker credentials are empty"
+                    exit 1
+                  fi
+                  echo "Logging into Docker..."
+                  docker login -u $DOCKER_CREDS_USR -p $DOCKER_CREDS_PSW || echo "Docker login failed"
                 '''
+                echo "Docker setup finished"
             }
         }
+
 
         stage('Build app container') {
             steps {
