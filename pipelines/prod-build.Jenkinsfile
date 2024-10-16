@@ -25,14 +25,6 @@ pipeline {
     }
 
     stages {
-        stage('Check Docker Installation') {
-            steps {
-                sh '''
-                  docker --version
-                '''
-            }
-        }
-
         stage('Docker setup') {
             steps {
                 sh '''
