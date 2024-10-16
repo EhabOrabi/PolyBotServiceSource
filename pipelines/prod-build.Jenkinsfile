@@ -14,7 +14,6 @@ pipeline {
         timestamps()  // display timestamp in console output
     }
 
-
     environment {
         IMAGE_TAG = "v1.0.$BUILD_NUMBER"
         IMAGE_BASE_NAME = "polybot2_prod"
