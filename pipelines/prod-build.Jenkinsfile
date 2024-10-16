@@ -16,10 +16,8 @@ pipeline {
         IMAGE_TAG = "v1.0.$BUILD_NUMBER"
         IMAGE_BASE_NAME = "polybot2_prod"
 
-        // Update this line with the correct credential ID
-        DOCKER_CREDS = credentials('3fae05e6-df33-4107-8ea2-72928aac9e90')
-        DOCKER_USERNAME = "${DOCKER_CREDS_USR}"  // The _USR suffix added to access the username value
-        DOCKER_PASS = "${DOCKER_CREDS_PSW}"      // The _PSW suffix added to access the password value
+        // Fetch Docker credentials from Jenkins
+        DOCKER_CREDS = credentials('dockerhub')
     }
 
     stages {
@@ -35,8 +33,10 @@ pipeline {
         stage('Build app container') {
             steps {
                 sh '''
-                    IMAGE_FULL_NAME=$DOCKER_USERNAME/$IMAGE_BASE_NAME:$IMAGE_TAG
+                    IMAGE_FULL_NAME=$DOCKER_CREDS_USR/$IMAGE_BASE_NAME:$IMAGE_TAG
+                    echo "Building Docker image: $IMAGE_FULL_NAME"
                     docker build -t $IMAGE_FULL_NAME .
+                    echo "Pushing Docker image: $IMAGE_FULL_NAME"
                     docker push $IMAGE_FULL_NAME
                 '''
             }
@@ -46,7 +46,7 @@ pipeline {
             steps {
                 build job: 'polybotDeployProd', wait: false, parameters: [
                     string(name: 'SERVICE_NAME', value: "prod"),
-                    string(name: 'IMAGE_FULL_NAME_PARAM', value: "$DOCKER_USERNAME/$IMAGE_BASE_NAME:$IMAGE_TAG")
+                    string(name: 'IMAGE_FULL_NAME_PARAM', value: "$DOCKER_CREDS_USR/$IMAGE_BASE_NAME:$IMAGE_TAG")
                 ]
             }
         }
