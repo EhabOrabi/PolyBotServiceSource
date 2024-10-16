@@ -20,7 +20,6 @@ pipeline {
         DOCKER_CREDS = credentials('dockerhub')
     }
 
-
     stages {
         stage('Docker setup') {
             steps {
