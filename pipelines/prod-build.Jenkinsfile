@@ -16,7 +16,7 @@ pipeline {
 
     environment {
         IMAGE_TAG = "v1.0.$BUILD_NUMBER"
-        IMAGE_BASE_NAME = "polybot2"
+        IMAGE_BASE_NAME = "polybot_prod"
 
         DOCKER_CREDS = credentials('dockerhub')
         DOCKER_USERNAME = "${DOCKER_CREDS_USR}"  // The _USR suffix added to access the username value
