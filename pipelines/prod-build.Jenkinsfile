@@ -30,7 +30,7 @@ pipeline {
             steps {
                 sh '''
                   echo "Logging into Docker Hub with username: $DOCKER_CREDS_USR"
-                  docker login -u $DOCKER_USERNAME -p DOCKER_PASS
+                  docker login -u $DOCKER_USERNAME -p $DOCKER_PASS
                 '''
             }
         }
