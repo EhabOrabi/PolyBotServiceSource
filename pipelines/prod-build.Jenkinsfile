@@ -35,6 +35,7 @@ pipeline {
         }
 
 
+
         stage('Build app container') {
             steps {
                 sh '''
