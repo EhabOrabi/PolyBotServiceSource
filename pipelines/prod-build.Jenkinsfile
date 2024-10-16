@@ -1,4 +1,3 @@
-
 pipeline {
     agent {
         label 'general'
@@ -7,7 +6,6 @@ pipeline {
     triggers {
         githubPush()
     }
-
 
     options {
         timeout(time: 10, unit: 'MINUTES')  // discard the build after 10 minutes of running
@@ -18,9 +16,8 @@ pipeline {
         IMAGE_TAG = "v1.0.$BUILD_NUMBER"
         IMAGE_BASE_NAME = "polybot2_prod"
 
+        // Fetch Docker credentials from Jenkins
         DOCKER_CREDS = credentials('dockerhub')
-        DOCKER_USERNAME = "${DOCKER_CREDS_USR}"  // The _USR suffix added to access the username value
-        DOCKER_PASS = "${DOCKER_CREDS_PSW}"      // The _PSW suffix added to access the password value
     }
 
     stages {
@@ -36,17 +33,20 @@ pipeline {
         stage('Build app container') {
             steps {
                 sh '''
-                    IMAGE_FULL_NAME=$DOCKER_USERNAME/$IMAGE_BASE_NAME:$IMAGE_TAG
+                    IMAGE_FULL_NAME=$DOCKER_CREDS_USR/$IMAGE_BASE_NAME:$IMAGE_TAG
+                    echo "Building Docker image: $IMAGE_FULL_NAME"
                     docker build -t $IMAGE_FULL_NAME .
+                    echo "Pushing Docker image: $IMAGE_FULL_NAME"
                     docker push $IMAGE_FULL_NAME
                 '''
             }
         }
+
         stage('Trigger Deploy') {
             steps {
                 build job: 'polybotDeployProd', wait: false, parameters: [
                     string(name: 'SERVICE_NAME', value: "prod"),
-                    string(name: 'IMAGE_FULL_NAME_PARAM', value: "$DOCKER_USERNAME/$IMAGE_BASE_NAME:$IMAGE_TAG")
+                    string(name: 'IMAGE_FULL_NAME_PARAM', value: "$DOCKER_CREDS_USR/$IMAGE_BASE_NAME:$IMAGE_TAG")
                 ]
             }
         }
