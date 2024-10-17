@@ -9,6 +9,7 @@ pipeline {
                      sh 'echo unittesting...'
                  }
              }
+
              stage('Lint') {
                  steps {
                      sh 'echo linting...'
