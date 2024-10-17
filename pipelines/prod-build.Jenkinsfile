@@ -14,6 +14,7 @@ pipeline {
     }
 
 
+
     environment {
         IMAGE_TAG = "v1.0.$BUILD_NUMBER"
         IMAGE_BASE_NAME = "polybot_prod"
