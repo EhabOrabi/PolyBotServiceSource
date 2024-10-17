@@ -45,10 +45,11 @@ pipeline {
         stage('Trigger Deploy') {
             steps {
                 build job: 'polybotDeployDev', wait: false, parameters: [
-                    string(name: 'SERVICE_NAME', value: "polybotDeployDev"),
+                    string(name: 'SERVICE_NAME', value: "dev"),
                     string(name: 'IMAGE_FULL_NAME_PARAM', value: "$DOCKER_USERNAME/$IMAGE_BASE_NAME:$IMAGE_TAG")
                 ]
             }
         }
     }
 }
+
