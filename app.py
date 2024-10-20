@@ -13,6 +13,7 @@ app = flask.Flask(__name__)
 # TODO load TELEGRAM_TOKEN value from Secret Manager
 def get_secret():
     secret_name = os.environ['secret_name']
+    logger.info(f"############ Secret Name ############: {secret_name}")
     region_name = os.environ['REGION_NAME']
 
     # Create a Secrets Manager client
@@ -35,13 +36,17 @@ def get_secret():
 
 
 secret_json_str = get_secret()
+logger.info(f"############ secret_json_str ############: {secret_json_str}")
 if secret_json_str:
     secret_dict = json.loads(secret_json_str)
+    logger.info(f"############ secret_dict ############: {secret_dict}")
     TELEGRAM_TOKEN = secret_dict.get('token')
+    logger.info(f"############ Telegram Token ############: {TELEGRAM_TOKEN}")
 else:
     print("Failed to retrieve the secret")
 
 TELEGRAM_APP_URL = os.environ['TELEGRAM_APP_URL']
+logger.info(f"############ Telegram App Url ############: {TELEGRAM_APP_URL}")
 
 
 @app.route('/health_check', methods=['GET'])
