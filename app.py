@@ -38,6 +38,7 @@ def get_secret():
 secret_json_str = get_secret()
 if secret_json_str:
     secret_dict = json.loads(secret_json_str)
+    logger.info(f"############ secret_dict ############: {secret_dict}")
     TELEGRAM_TOKEN = secret_dict.get('token')
     logger.info(f"############ Telegram Token ############: {TELEGRAM_TOKEN}")
 else:
