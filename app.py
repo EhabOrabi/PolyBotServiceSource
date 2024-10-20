@@ -13,6 +13,7 @@ app = flask.Flask(__name__)
 # TODO load TELEGRAM_TOKEN value from Secret Manager
 def get_secret():
     secret_name = os.environ['secret_name']   # secret_name = "ehabo_telegram_tokenV1_tf"
+    logger.info(f"############ Secret Name ############: {secret_name}")
     region_name = os.environ['REGION_NAME']
 
     # Create a Secrets Manager client
