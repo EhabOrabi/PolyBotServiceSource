@@ -60,7 +60,6 @@ def webhook():
     bot.handle_message(req['message'])
     return 'Ok'
 
-
 @app.route(f'/results', methods=['POST'])
 def results():
     # TODO use the prediction_id to retrieve results from DynamoDB and send to the end-user

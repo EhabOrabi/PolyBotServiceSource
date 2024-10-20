@@ -13,7 +13,6 @@ import boto3
 # Setup loguru logger
 logger.add("debug.log", format="{time} {level} {message}", level="DEBUG", rotation="10 MB")
 
-
 class Bot:
 
     def __init__(self, token, telegram_chat_url):
