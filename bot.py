@@ -32,7 +32,7 @@ class Bot:
         # Set the webhook URL
         try:
            # Open certificate file only when needed and set webhook
-            with open("/usr/src/app/tls.crt", 'r') as cert:
+            with open("/usr/src/app/tls/tls.crt", 'r') as cert:
                 self.telegram_bot_client.set_webhook(url=f'{telegram_chat_url}/{token}/', certificate=cert ,timeout=60)
             logger.info("Webhook set successfully.")
         except Exception as e:
