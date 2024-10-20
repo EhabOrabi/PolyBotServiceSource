@@ -34,11 +34,13 @@ def get_secret():
 
     return secret
 
+
 secret_json_str = get_secret()
 if secret_json_str:
     secret_dict = json.loads(secret_json_str)
     logger.info(f"############ secret_dict ############: {secret_dict}")
-    TELEGRAM_TOKEN = secret_dict.get('token')
+    secret_name = os.environ['secret_name']
+    TELEGRAM_TOKEN = secret_dict.get('secret_name')
     logger.info(f"############ Telegram Token ############: {TELEGRAM_TOKEN}")
 else:
     print("Failed to retrieve the secret")
@@ -62,6 +64,7 @@ def webhook():
     req = request.get_json()
     bot.handle_message(req['message'])
     return 'Ok'
+
 
 @app.route(f'/results', methods=['POST'])
 def results():
