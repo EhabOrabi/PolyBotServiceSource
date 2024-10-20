@@ -28,8 +28,6 @@ class Bot:
             logger.error(f"Error removing webhook: {e}")
 
         time.sleep(0.5)
-
-        logger.info(f" ############## TOKEN ############# : {token}.")
         # Set the webhook URL
         try:
             # Open certificate file only when needed and set webhook
