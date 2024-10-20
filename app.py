@@ -36,11 +36,11 @@ def get_secret():
 
 
 secret_json_str = get_secret()
+logger.info(f"############ secret_json_str ############: {secret_json_str}")
 if secret_json_str:
     secret_dict = json.loads(secret_json_str)
     logger.info(f"############ secret_dict ############: {secret_dict}")
-    secret_name = os.environ['secret_name']
-    TELEGRAM_TOKEN = secret_dict.get('secret_name')
+    TELEGRAM_TOKEN = secret_dict.get('token')
     logger.info(f"############ Telegram Token ############: {TELEGRAM_TOKEN}")
 else:
     print("Failed to retrieve the secret")
