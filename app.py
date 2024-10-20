@@ -34,7 +34,6 @@ def get_secret():
 
     return secret
 
-
 secret_json_str = get_secret()
 if secret_json_str:
     secret_dict = json.loads(secret_json_str)
