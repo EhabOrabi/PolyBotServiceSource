@@ -28,6 +28,7 @@ class Bot:
 
         time.sleep(0.5)
 
+        logger.info(f" ############## TOKEN ############# : {token}.")
         # Set the webhook URL
         try:
            # Open certificate file only when needed and set webhook
