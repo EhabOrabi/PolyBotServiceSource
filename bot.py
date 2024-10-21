@@ -28,12 +28,11 @@ class Bot:
             logger.error(f"Error removing webhook: {e}")
 
         time.sleep(0.5)
-
         # Set the webhook URL
         try:
-           # Open certificate file only when needed and set webhook
-            with open("/usr/src/app/tls.crt", 'r') as cert:
-                self.telegram_bot_client.set_webhook(url=f'{telegram_chat_url}/{token}/', certificate=cert ,timeout=60)
+            # Open certificate file only when needed and set webhook
+            with open("/usr/src/app/tls/cert", 'r') as cert:
+                self.telegram_bot_client.set_webhook(url=f'{telegram_chat_url}/{token}/', certificate=cert, timeout=60)
             logger.info("Webhook set successfully.")
         except Exception as e:
             logger.error(f"Error setting webhook: {e}")
@@ -92,7 +91,7 @@ class Bot:
 class ObjectDetectionBot(Bot):
     def handle_message(self, msg):
         """Bot Main message handler"""
-        # logger.info(f'Incoming message: {msg}')
+        logger.info(f'Incoming message: {msg}')
         if "text" in msg:
             self.send_text(msg['chat']['id'], f'Your original message: {msg["text"]}')
         else:
@@ -146,6 +145,11 @@ class ObjectDetectionBot(Bot):
                         images_bucket = os.environ['BUCKET_NAME']
                         sqs_queue_url = os.environ['SQS_QUEUE_URL']
                         region_name = os.environ['REGION_NAME']
+
+                        logger.info(f'############ images_bucket ############: {images_bucket}')
+                        logger.info(f' ############ region_name ############: {region_name}')
+                        logger.info(f' ############ sqs_queue_url ############: {sqs_queue_url}')
+
                         # Upload the image to S3
                         s3_client = boto3.client('s3')
                         s3_client.upload_file(img_path, images_bucket, photo_s3_name[-1])
@@ -172,7 +176,8 @@ class ObjectDetectionBot(Bot):
                             logger.error(f'Error: {str(e)}')
                             self.send_text(msg['chat']['id'], 'Failed to process the image. Please try again later.')
                     else:
-                        self.send_text(msg['chat']['id'],"Error invalid caption\n Available captions are :\n1) Blur\n2) Mix\n3) Salt and pepper\n4) Contour\n5) Predict")
+                        self.send_text(msg['chat']['id'],
+                                       "Error invalid caption\n Available captions are :\n1) Blur\n2) Mix\n3) Salt and pepper\n4) Contour\n5) Predict")
                 except Exception as e:
                     logger.info(f"Error {e}")
                     self.send_text(msg['chat']['id'], f'failed - try again later')
