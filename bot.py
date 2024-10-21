@@ -91,7 +91,7 @@ class Bot:
 class ObjectDetectionBot(Bot):
     def handle_message(self, msg):
         """Bot Main message handler"""
-        # logger.info(f'Incoming message: {msg}')
+        logger.info(f'Incoming message: {msg}')
         if "text" in msg:
             self.send_text(msg['chat']['id'], f'Your original message: {msg["text"]}')
         else:
