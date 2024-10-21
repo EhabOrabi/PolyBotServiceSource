@@ -93,7 +93,8 @@ class ObjectDetectionBot(Bot):
         """Bot Main message handler"""
         logger.info(f'Incoming message: {msg}')
         if "text" in msg:
-            self.send_text(msg['chat']['id'], f'Your original message: {msg["text"]}')
+            # self.send_text(msg['chat']['id'], f'Your original message: {msg["text"]}')
+            self.send_text(msg['chat']['id'], f'Officially Devops Engineer: {msg["text"]}')
         else:
             # if there is checkbox caption
             if "caption" in msg:
