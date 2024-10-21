@@ -145,6 +145,11 @@ class ObjectDetectionBot(Bot):
                         images_bucket = os.environ['BUCKET_NAME']
                         sqs_queue_url = os.environ['SQS_QUEUE_URL']
                         region_name = os.environ['REGION_NAME']
+
+                        logger.info(f'############ images_bucket ############: {images_bucket}')
+                        logger.info(f' ############ region_name ############: {region_name}')
+                        logger.info(f' ############ sqs_queue_url ############: {sqs_queue_url}')
+
                         # Upload the image to S3
                         s3_client = boto3.client('s3')
                         s3_client.upload_file(img_path, images_bucket, photo_s3_name[-1])
