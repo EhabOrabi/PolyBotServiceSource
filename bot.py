@@ -211,6 +211,7 @@ class ObjectDetectionBot(Bot):
                         "1) Blur\n2) Mix\n3) Salt and pepper\n4) Contour\n5) Predict"
                     ))
 
+
             except Exception as e:
                 logger.info(f"Error {e}")
                 self.send_text(msg['chat']['id'], 'Failed to process image. Try again later.')
