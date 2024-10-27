@@ -202,7 +202,36 @@ class ObjectDetectionBot(Bot):
                     self.send_text(msg['chat']['id'], "Your image is being processed. Please wait...")
                     logger.info(f'Photo downloaded to: {img_path}')
 
-                    # S3 and SQS processing code (unchanged, since it works as expected)
+                    self.send_text(msg['chat']['id'], "Your image is being processed. Please wait...")
+                    logger.info(f'Photo downloaded to: {img_path}')
+                    # Split photo name
+                    photo_s3_name = img_path.split("/")
+                    # Get the bucket name from the environment variable
+                    images_bucket = os.environ['BUCKET_NAME']
+                    sqs_queue_url = os.environ['SQS_QUEUE_URL']
+                    region_name = os.environ['REGION_NAME']
+                    # Upload the image to S3
+                    s3_client = boto3.client('s3')
+                    s3_client.upload_file(img_path, images_bucket, photo_s3_name[-1])
+                    # Prepare the data to be sent to SQS
+                    prediction_id = str(uuid.uuid4())
+                    json_data = {
+                        'imgName': img_path,
+                        'chat_id': msg['chat']['id'],
+                        'prediction_id': prediction_id
+                    }
+                    try:
+                        # Send job to queue
+                        sqs = boto3.client('sqs', region_name=region_name)
+                        response = sqs.send_message(
+                            QueueUrl=sqs_queue_url,
+                            MessageBody=json.dumps(json_data)
+                        )
+                        logger.info(f'sqs_queue_url: {sqs_queue_url}')
+                        logger.info(f'region_name: {region_name}')
+                    except Exception as e:
+                        logger.error(f'Error: {str(e)}')
+                        self.send_text(msg['chat']['id'], 'Failed to process the image. Please try again later.')
 
                 else:
                     # Notify user of valid captions if an invalid one is provided
@@ -210,7 +239,6 @@ class ObjectDetectionBot(Bot):
                         "Error: Invalid caption\nAvailable captions:\n"
                         "1) Blur\n2) Mix\n3) Salt and pepper\n4) Contour\n5) Predict "
                     ))
-
 
             except Exception as e:
                 logger.info(f"Error {e}")
