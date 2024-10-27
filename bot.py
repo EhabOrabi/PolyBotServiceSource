@@ -208,7 +208,7 @@ class ObjectDetectionBot(Bot):
                     # Notify user of valid captions if an invalid one is provided
                     self.send_text(msg['chat']['id'], (
                         "Error: Invalid caption\nAvailable captions:\n"
-                        "1) Blur\n2) Mix\n3) Salt and pepper\n4) Contour\n5) Predict"
+                        "1) Blur\n2) Mix\n3) Salt and pepper\n4) Contour\n5) Predict "
                     ))
 
 
