@@ -148,7 +148,6 @@ class ObjectDetectionBot(Bot):
                     "Try sending a photo with one of these captions!"
                 )
                 self.send_text(msg['chat']['id'], help_message)
-
             else:
                 # Default response to echo the message with a prefix
                 self.send_text(msg['chat']['id'], f'Officially DevOps Engineer: {msg["text"]}')
