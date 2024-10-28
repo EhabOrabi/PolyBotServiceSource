@@ -218,6 +218,7 @@ class ObjectDetectionBot(Bot):
                         'prediction_id': prediction_id
                     }
                     try:
+
                         # Send job to queue
                         sqs = boto3.client('sqs', region_name=region_name)
                         response = sqs.send_message(
