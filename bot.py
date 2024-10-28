@@ -201,8 +201,6 @@ class ObjectDetectionBot(Bot):
                     self.send_text(msg['chat']['id'], "Your image is being processed. Please wait...")
                     logger.info(f'Photo downloaded to: {img_path}')
 
-                    self.send_text(msg['chat']['id'], "Your image is being processed. Please wait...")
-                    logger.info(f'Photo downloaded to: {img_path}')
                     # Split photo name
                     photo_s3_name = img_path.split("/")
                     # Get the bucket name from the environment variable
